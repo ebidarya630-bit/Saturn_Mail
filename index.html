@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080d26">
 <meta name="description" content="Saturn Mailchat — پیام‌رسان و فروشگاه از Saturn Studio">
+<link rel="manifest" href="./manifest.webmanifest">
 <title>Saturn Mailchat | Saturn Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,5 +59,10 @@ $('changeNameBtn').addEventListener('click',()=>{const n=prompt('نام نمای
 $('logoutBtn').addEventListener('click',()=>{localStorage.removeItem('saturn-user');state.user='';$('loginVeil').style.display='grid';syncUser()});
 $('themeBtn').addEventListener('click',()=>{document.body.classList.toggle('light');if(document.body.classList.contains('light')){document.documentElement.style.setProperty('--bg','#e9efff');document.documentElement.style.setProperty('--text','#101936');document.documentElement.style.setProperty('--panel','#fff');document.querySelectorAll('.panel').forEach(p=>p.style.background='#ffffffed');toast('حالت روشن فعال شد')}else{location.reload()}});
 })();
+</script>
+<script>
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));
+}
 </script>
 </body></html>
