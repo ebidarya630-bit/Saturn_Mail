@@ -1,0 +1,13 @@
+{
+  "name": "Saturn Mailchat",
+  "short_name": "Saturn",
+  "description": "پیام‌رسان و فروشگاه Saturn Studio",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080d26",
+  "theme_color": "#080d26",
+  "icons": []
+}
