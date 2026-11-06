@@ -148,8 +148,7 @@ create policy "Members see member lists" on public.conversation_members
 drop policy if exists "Conversation creator adds members" on public.conversation_members;
 create policy "Conversation creator adds members" on public.conversation_members
   for insert to authenticated with check (
-    user_id = (select auth.uid())
-    or exists (select 1 from public.conversations c
+    exists (select 1 from public.conversations c
       where c.id = conversation_id and c.created_by = (select auth.uid()))
     or exists (select 1 from public.conversation_members cm
       where cm.conversation_id = conversation_id and cm.user_id = (select auth.uid())
@@ -232,10 +231,17 @@ create policy "Authenticated users upload own media" on storage.objects
     and (storage.foldername(name))[1] = (select auth.uid())::text
   );
 drop policy if exists "Users read own media" on storage.objects;
-create policy "Users read own media" on storage.objects
+create policy "Users read own media or shared message attachments" on storage.objects
   for select to authenticated using (
     bucket_id = 'saturn-media'
-    and (storage.foldername(name))[1] = (select auth.uid())::text
+    and (
+      (storage.foldername(name))[1] = (select auth.uid())::text
+      or exists (
+        select 1 from public.messages m
+        where m.attachment_path = name
+          and public.is_conversation_member(m.conversation_id)
+      )
+    )
   );
 drop policy if exists "Users delete own media" on storage.objects;
 create policy "Users delete own media" on storage.objects
